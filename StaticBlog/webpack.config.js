@@ -1,54 +1,67 @@
-﻿var path = require("path");
-var webpack = require("webpack");
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+﻿const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge'); 
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 
-var extractSass = new ExtractTextPlugin({
-    filename: "index.[contenthash].css",
-    disable: process.env.NODE_ENV === "development"
-});
+module.exports = (env) => {
+    // Configuration in common to both client-side and server-side bundles
+    const isDevBuild = !(env && env.prod);
+    const sharedConfig = {
+        stats: { modules: false },
+        context: __dirname,
+        resolve: { extensions: ['.js', '.ts'] },
+        output: {
+            filename: '[name].js',
+            publicPath: 'assets/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
+        },
+        devtool: "source-map",
+        module: {
+            rules: [
+                { test: /\.ts$/, include: /Assets/, use: 'awesome-typescript-loader' },
+                isDevBuild ?
+                    { test: /\.sass$/, loader: 'style-loader!css-loader?sourceMap&sourceComments!sass-loader?sourceMap&sourceComments'  } :
+                    {
+                        test: /\.sass$/,
+                        use: ExtractTextPlugin.extract({
+                            fallback: 'style-loader',
+                            //resolve-url-loader may be chained before sass-loader if necessary
+                            use: ['css-loader?sourceMap&minify', 'sass-loader?sourceMap']
+                        })
+                    },
+                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+            ]
+        },
+        plugins: [new CheckerPlugin()]
+    };
 
-var rootPath = path.join(__dirname, "wwwroot/assets/");
-
-module.exports = {
-    entry: './Assets/index',
-    output: {
-        path: rootPath,
-        publicPath: '/assets/',
-        filename: "index.[hash].js"
-    },
-    resolve: {
-        // Add '.ts' and '.tsx' as a resolvable extension.
-        extensions: [".webpack.js", ".web.js", ".ts", ".js"]
-    },
-    devtool: "source-map", // any "source-map"-like devtool is possible
-    module: {
-        loaders: [
-            // all files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'
-            { test: /\.tsx?$/, loader: "ts-loader" }
-        ],
-        rules: [{
-            test: [/\.scss$/, /\.sass$/],
-            use: extractSass.extract({
-                fallback:[{
-                    loader: "style-loader", // creates style nodes from JS strings
-                    options: { sourceMaps: true }
-                }],
-                use: [{
-                    loader: "css-loader", // translates CSS into CommonJS
-                    options: { sourceMaps: true }
-                }, {
-                    loader: "sass-loader", // compiles Sass to CSS
-                    options: {
-                        sourceMaps: true,
-                        indentedSyntax: true
+    // Configuration for client-side bundle suitable for running in browsers
+    const clientBundleOutputDir = './wwwroot/assets';
+    const clientBundleConfig = merge(sharedConfig, {
+        entry: { 'main': './Assets/index' },
+        output: { path: path.join(__dirname, clientBundleOutputDir) },
+        plugins: isDevBuild ?
+            [
+                // Plugins that apply in development builds only
+                new webpack.SourceMapDevToolPlugin({
+                    filename: '[file].map', // Remove this line if you prefer inline source maps
+                    moduleFilenameTemplate: path.relative(clientBundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
+                })
+            ] : [
+                new webpack.SourceMapDevToolPlugin({
+                    filename: '[file].map', // Remove this line if you prefer inline source maps
+                    moduleFilenameTemplate: path.relative(clientBundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
+                }),
+                // Plugins that apply in production builds only
+                new webpack.DefinePlugin({
+                    "process.env": {
+                        "NODE_ENV": JSON.stringify("production")
                     }
-                }]
-            })
-        }]
-    },
-    plugins: [
-        new CleanWebpackPlugin(["*.js", "*.css", "*.js.map", "*.css.map"], { root: rootPath }),
-        extractSass,
-    ]
-}
+                }),
+                new ExtractTextPlugin('main.css'),
+                new webpack.optimize.UglifyJsPlugin()
+            ]
+    });
+
+    return clientBundleConfig;
+};

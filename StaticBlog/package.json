@@ -9,15 +9,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^8.0.22",
-    "@types/webpack": "^3.0.9",
+    "@types/node": "^8.0.24",
+    "@types/webpack-env": "^1.13.0",
+    "aspnet-webpack": "^2.0.1",
+    "awesome-typescript-loader": "^3.2.3",
     "clean-webpack-plugin": "^0.1.16",
-    "css-loader": "^0.28.4",
+    "css-loader": "^0.28.5",
     "extract-text-webpack-plugin": "^3.0.0",
     "fs-extra": "^4.0.1",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.2.1",
     "node-sass": "^4.5.3",
+    "on-build-webpack": "^0.1.0",
     "run-sequence": "^2.1.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
@@ -25,9 +28,10 @@
     "ts-node": "^3.3.0",
     "typescript": "^2.4.2",
     "webpack": "^3.5.4",
-    "webpack-aspnet-middleware": "^0.7.7",
-    "webpack-dev-server": "^2.7.1",
+    "webpack-hot-middleware": "^2.18.2",
+    "webpack-merge": "^4.1.0",
     "webpack-stream": "^4.0.0",
     "website-scraper": "^3.1.0"
-  }
+  },
+  "dependencies": {}
 }

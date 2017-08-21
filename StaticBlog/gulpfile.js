@@ -8,12 +8,11 @@ var downloadSite = require('./Gulp/downloadSite');
 var site = require('./Gulp/site');
 
 
-gulp.task('default', ["webpack:build-dev"], function() {
-	gulp.watch(["Assets/**/*"], ["webpack:build-dev"]);
-});
+gulp.task('default', ["webpack:build-dev"]);
 
-gulp.task('webpack:build-dev', function(callback) {
-   webpack(webpackConfig).run(function(err, stats) {
+gulp.task('webpack:build-dev', function (callback) {
+   var env = { prod: false };
+   webpack(webpackConfig(env)).run(function(err, stats) {
 		if(err) throw new gutil.PluginError("webpack:build-dev", err);
 		gutil.log("[webpack:build-dev]", stats.toString({
 			colors: true
@@ -25,21 +24,8 @@ gulp.task('webpack:build-dev', function(callback) {
 gulp.task("build", ["webpack:build"]);
 
 gulp.task("webpack:build", function(callback) {
-	// modify some webpack config options
-	var myConfig = Object.create(webpackConfig);
-	myConfig.plugins = myConfig.plugins.concat(
-		new webpack.DefinePlugin({
-			"process.env": {
-				// This has effect on the react lib size
-				"NODE_ENV": JSON.stringify("production")
-			}
-		}),
-		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.UglifyJsPlugin()
-	);
-
-	// run webpack
-	webpack(myConfig, function(err, stats) {
+    var env = { prod: true };
+    webpack(webpackConfig(env), function(err, stats) {
 		if(err) throw new gutil.PluginError("webpack:build", err);
 		gutil.log("[webpack:build]", stats.toString({
 			colors: true
