@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Output/localhost_55955
+/.vscode

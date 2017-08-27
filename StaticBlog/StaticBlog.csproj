@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Posts\Post1.html" />
+    <Content Include="Posts\Post2.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="YamlDotNet" Version="4.2.1" />
   </ItemGroup>
 
   <ItemGroup>

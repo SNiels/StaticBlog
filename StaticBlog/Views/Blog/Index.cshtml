@@ -1,0 +1,12 @@
+﻿@model Post[]
+@{
+    ViewData["Title"] = "Blog";
+}
+
+@foreach(var post in Model)
+{
+    <text>Title: </text>@post.Title <br />
+    <text>Tags: </text>@string.Join(", ", post.Tags)    <br />
+    <text>Created at: </text>@post.CreatedAt.ToString("yyyy-MM-dd")    <br />
+    <a asp-route="blog" asp-route-slug="@post.Slug">See post</a> <br />
+}
