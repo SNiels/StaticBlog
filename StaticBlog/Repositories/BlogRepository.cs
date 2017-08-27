@@ -8,39 +8,22 @@ using System.IO;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.Converters;
 using System.Text;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace StaticBlog.Repositories
 {
     public class BlogRepository : IBlogRepository
     {
-        private const string MetadataCacheKey = "metadataCache";
         private readonly IHostingEnvironment hostingEnvironment;
-        private readonly IMemoryCache cache;
 
-        public BlogRepository(IHostingEnvironment hostingEnvironment, IMemoryCache cache)
+        public BlogRepository(IHostingEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
-            this.cache = cache;
         }
 
         public Dictionary<string, Post> GetPosts()
         {
-            if (!cache.TryGetValue(MetadataCacheKey, out Dictionary<string, Post> metadata))
-            {
-                metadata = GetPostsFromDisk();
-                cache.Set(MetadataCacheKey, metadata);
-            }
-
-            return metadata;
-        }
-
-        public Post GetPostBySlug(string slug) => GetPosts()[slug];
-
-        private Dictionary<string, Post> GetPostsFromDisk()
-        {
             var posts = new List<Post>();
-            var metadataFileNames = Directory.GetFiles($"{hostingEnvironment.ContentRootPath}/Posts/","*.html", SearchOption.AllDirectories);
+            var metadataFileNames = Directory.GetFiles($"{hostingEnvironment.ContentRootPath}/Posts/", "*.html", SearchOption.AllDirectories);
 
             foreach (var metadataFileName in metadataFileNames)
             {
@@ -87,5 +70,7 @@ namespace StaticBlog.Repositories
             }
             return posts.OrderBy(metadata => metadata.CreatedAt).ToDictionary(metadata => metadata.Slug);
         }
+
+        public Post GetPostBySlug(string slug) => GetPosts()[slug];
     }
 }

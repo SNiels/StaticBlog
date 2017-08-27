@@ -1,0 +1,45 @@
+Title: Updated Ajax + SEO Guidelines
+Slug: updated-ajax-seo-guidelines6
+CreatedAt: 2015-11-07
+Tags:
+- SEO
+- AJAX
+---
+<p>
+    When you build an Ajax based website and want to be SEO friendly, there are a couple of techniques you have to apply.
+    Back in 2009, Google made a <a href="http://googlewebmastercentral.blogspot.be/2009/10/proposal-for-making-ajax-crawlable.html" target="_blank" rel="external">proposal</a> on how to make your Ajax pages crawlable. 
+    Later on in 2014, they updated their <a href="http://googlewebmastercentral.blogspot.be/2014/10/updating-our-technical-webmaster.html" target="_blank" rel="external">advice</a> saying the following:
+</p>
+<blockquote>
+    <p>
+        Historically, Google indexing systems resembled old text-only browsers, such as Lynx, and that's what our Webmaster Guidelines said. 
+        Now, with indexing based on page rendering, it's no longer accurate to see our indexing systems as a text-only browser. 
+        Instead, a more accurate approximation is a modern web browser.
+    </p>
+</blockquote>
+<p>
+    This means that Google Bots actually understand and see your web page as users do. 
+    Content generated from Javascript will also be indexed. 
+    So if you are using Javascript frameworks like Angular, Ember, or any that will generate HTML, Google will be able to crawl it. 
+    Google not only crawls your HTML, but also your Javascript and CSS-unless you disallow it.
+</p>
+<p>
+    <em>
+        Note: if you are making Ajax calls to an API or resource that disallows crawling, Google will not be able to pull that content. 
+        They will warn you when you "<a href="https://www.google.com/webmasters/tools/googlebot-fetch" target="_blank" rel="external">Fetch as Google</a>", although "Fetch as Google" is not completely the same as how the Googlebot will see your page as noted on <a href="http://stackoverflow.com/questions/28040302/fetch-as-google-tool-for-simple-ajax-site-not-working" target="_blank" rel="external">Stackoverflow</a>. 
+        So keep that in mind.
+    </em>
+</p>
+<p>
+    Today, services like <a href="https://prerender.io/" target="_blank" rel="external">Prerender.io</a>, <a href="http://www.brombone.com/" target="_blank" rel="external">Brombone</a>, or other solutions are used to serve prerendered pages to search engines and social media services following Google's proposal back in 2009. 
+    Even more so, Google <a href="http://googlewebmastercentral.blogspot.co.uk/2015/10/deprecating-our-ajax-crawling-scheme.html" target="_blank" rel="external">deprecated</a> their Ajax crawling scheme last month (Oct 14th, 2015). 
+    This means Google is recommending not to use the "_escaped_fragment_" URLs in the future, but they will keep supporting it so you don't have to change your existing projects.
+</p>
+<p>
+    Prerendering solutions are not necessary because your Javascript is being executed. 
+    Unfortunately, other search engines and social media services won't do this yet. For instance, social media posts still include moustache syntax titles like "{{page.title}}". 
+    So as suggested on <a href="http://webmasters.stackexchange.com/questions/86262/should-we-drop-ajax-crawling-scheme/86263#86264" target="_blank" rel="external">ProWebmasters (StackExchange)</a>, you shouldn't disable prerendering yet.
+</p>
+<p>
+    Hopefully, you can forget about Ajax Crawlability issues soon, but for now (and probably for a while) you may still need to serve prerendered pages, depending on your requirements.
+</p>

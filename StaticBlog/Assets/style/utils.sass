@@ -1,0 +1,23 @@
+$lg: 1200px
+=lg-dev
+  @media (min-width: #{$md})
+    @content
+
+$md: 992px
+=md-dev
+  @media (min-width: #{$md}) and (max-width: #{$lg - 1px}) 
+    @content
+  
+$sm: 768px
+=sm-dev
+  @media (min-width: #{$sm}) and (max-width: #{$md - 1px}) 
+    @content
+
+$xs: 480px
+=xs-dev
+  @media (min-width: #{$xs}) and (max-width: #{$sm - 1px}) 
+    @content
+
+=xxs-dev
+  @media (max-width: #{$xs - 1px}) 
+    @content

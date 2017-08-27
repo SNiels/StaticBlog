@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StaticBlog.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StaticBlog.Controllers
 {
@@ -16,10 +13,15 @@ namespace StaticBlog.Controllers
             this.blogRepository = blogRepository;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int pageNumber = 1)
         {
-            var post = blogRepository.GetPosts().Values.ToArray();
-            return View(post);
+            var pageSize = 6;
+            var allPosts = blogRepository.GetPosts().Values;
+            var selectedPosts = allPosts
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
+                .ToArray();
+            return View(selectedPosts);
         }
 
         public ActionResult Post(string slug)

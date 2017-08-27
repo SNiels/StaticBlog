@@ -3,10 +3,17 @@
     ViewData["Title"] = "Blog";
 }
 
-@foreach(var post in Model)
-{
-    <text>Title: </text>@post.Title <br />
-    <text>Tags: </text>@string.Join(", ", post.Tags)    <br />
-    <text>Created at: </text>@post.CreatedAt.ToString("yyyy-MM-dd")    <br />
-    <a asp-route="blog" asp-route-slug="@post.Slug">See post</a> <br />
-}
+<section class="posts">
+    @foreach (var post in Model)
+    {
+        <a asp-route="blog" asp-route-slug="@post.Slug" class="card" style="background-image: url('https://nielsswimberghe.files.wordpress.com/2016/07/rnicm96itqa1gdiodkbe_part-1.jpg?w=460&h=336&crop=1')">
+            <img src="https://nielsswimberghe.files.wordpress.com/2016/07/rnicm96itqa1gdiodkbe_part-1.jpg?w=460&h=336&crop=1" />
+            <h2>@post.Title</h2>
+            <p>
+                @string.Join(", ", post.Tags)    <br />
+                <text>Created at: </text>@post.CreatedAt.ToString("yyyy-MM-dd") <br />
+            </p>
+        </a>
+    }
+</section>
+

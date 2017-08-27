@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using StaticBlog.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace StaticBlog
 {
@@ -17,10 +18,23 @@ namespace StaticBlog
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureProductionServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddMemoryCache();
+            services.AddTransient<BlogRepository>();
+            services.AddTransient<IBlogRepository, CachedBlogRepository>(provider =>
+            {
+                return new CachedBlogRepository(
+                    provider.GetService<IMemoryCache>(),
+                    provider.GetService<BlogRepository>()
+                );
+            });
+        }
+
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            services.AddMvc();
             services.AddTransient<IBlogRepository, BlogRepository>();
         }
 
@@ -47,6 +61,13 @@ namespace StaticBlog
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+
+                //do not use {page}, this causes a bug in core 2
+                routes.MapRoute(
+                    name: "paged_blogs",
+                    template: "blog/page/{pageNumber?}",
+                    defaults: new { controller = "Blog", action = "Index" });
 
                 routes.MapRoute(
                     name: "blog",

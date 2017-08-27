@@ -6,9 +6,13 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Content Include="Posts\Post1.html" />
-    <Content Include="Posts\Post2.html" />
+    <Content Include="Posts\2015\11-07-updated-ajax-seo-guidelines.html" />
+    <Content Include="Posts\2016\07-28-exploring-vuejs-and-firebase.html" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,62 @@
+.posts
+  +center($pad: 8px)
+
+  .card
+    +lg-dev
+        +column(1/3, $cycle: 3)
+    +md-dev
+        +column(1/2, $cycle: 2)
+    +sm-dev
+        +column(1/2, $cycle: 2)
+    +xs-dev
+        +column(1, $cycle: 1)
+    +xxs-dev
+        +column(1, $cycle: 1)
+    position: relative
+    margin-bottom: 36px
+    overflow: hidden
+    height: 336px
+    background-size: cover
+    background-position: center center
+    transition: transform .5s ease
+
+    img
+      display: none
+
+    h2
+      position: absolute
+      bottom: 12px
+      left: 12px
+      color: #fff
+      z-index: 1
+      transition: bottom .5s ease
+
+    p 
+      position: absolute
+      color: #fff
+      z-index: 1
+      top: 336px
+      left: 12px
+      text-align: justify
+      transition: top .5s ease
+
+    &:before
+      content: " "
+      display: block
+      position: absolute
+      width: 100%
+      height: 35%
+      bottom: 0
+      left: 0
+      background-image: linear-gradient(transparent, rgba(0,0,0,.9))
+      transition: height .5s
+      
+    &:hover, &:focus
+      transform: scale(1.08)
+
+      h2
+        bottom: 226px
+      p
+        top: 114px
+      &:before
+        height: 300%
