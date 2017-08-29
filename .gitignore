@@ -261,3 +261,7 @@ __pycache__/
 *.pyc
 /Output/localhost_55955
 /.vscode
+/StaticBlog/wwwroot/assets/main.css
+/StaticBlog/wwwroot/assets/main.css.map
+/StaticBlog/wwwroot/assets/main.js
+/StaticBlog/wwwroot/assets/main.js.map
