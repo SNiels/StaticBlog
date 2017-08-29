@@ -1,15 +1,10 @@
-﻿var exec = require('child_process').exec;
-
+﻿var childProcess = require('child_process');
+var exec = childProcess.exec;
 
 var started = false;
-var child;
 
 function run(cb) {
-    child = exec('dotnet run --launch-profile StaticBlogProduction', function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        cb && cb(err);
-    });
+    var child = exec('dotnet run --launch-profile StaticBlogProduction');
 
     child.stdout.on('data', (data) => {
         if (!started && data.indexOf('Application started') !== -1) {
@@ -17,14 +12,17 @@ function run(cb) {
             cb && cb();
         }
     });
+
+    return child;
 }
 
 function kill() {
-    child.kill();
+    exec('taskkill /F /IM dotnet.exe')
 }
-
 
 module.exports = {
     run,
     kill
 };
+
+

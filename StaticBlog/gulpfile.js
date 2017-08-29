@@ -35,14 +35,15 @@ gulp.task('webpack:build', function(callback) {
 });
 
 gulp.task('generateStaticSite', function (cb) {
-    runSequence('build', 'runsite', 'downloadSite', function () {
-        cb();
-        process.exit(0);
-    });
+    runSequence('build', 'runsite', 'downloadSite', 'killsite', cb);
 });
 
 gulp.task('runsite', function (cb) {
     site.run(cb);
+});
+
+gulp.task('killsite', function () {
+    site.kill();
 });
 
 gulp.task('downloadSite', function (cb) {

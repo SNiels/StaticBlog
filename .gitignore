@@ -265,3 +265,5 @@ __pycache__/
 /StaticBlog/wwwroot/assets/main.css.map
 /StaticBlog/wwwroot/assets/main.js
 /StaticBlog/wwwroot/assets/main.js.map
+/Output/*
+!/Output/.gitkeep

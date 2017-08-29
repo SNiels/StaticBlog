@@ -1,10 +1,12 @@
 ﻿var scrape = require('website-scraper');
-var fs = require('fs-extra');
+var fs = require('fs');
+var fsExtra = require('fs-extra');
 
 var rootUrl = 'http://localhost:55955';
+var outputDir = '../Output';
 var options = {
     urls: [rootUrl],
-    directory: '../Output/',
+    directory: '../Temp/',
     recursive: true,
     filenameGenerator: 'bySiteStructure',
     maxDepth: 100,
@@ -15,11 +17,22 @@ var options = {
 };
 
 module.exports = function (readyCallback) {
-    if (fs.pathExistsSync(options.directory)) {
-        fs.removeSync(options.directory);
+    if (fsExtra.pathExistsSync(options.directory)) {
+        fsExtra.removeSync(options.directory);
     }
     // with promise
     scrape(options).then((result) => {
+        var dirs = fs.readdirSync(outputDir);
+        for (let dir of dirs) {
+            if (dir.indexOf('.') == 0) {
+                continue;
+            }
+            fsExtra.removeSync(`${outputDir}/${dir}`);
+        }
+
+        fsExtra.moveSync(`${options.directory}localhost_55955`, outputDir);
+        fsExtra.removeSync(options.directory);
+
         if (readyCallback) {
             readyCallback();
         }
