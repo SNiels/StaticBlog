@@ -24,6 +24,7 @@ module.exports = function (readyCallback) {
             readyCallback();
         }
     }).catch((err) => {
+        throw err;
         /* some code here */
     });
-}
+};
