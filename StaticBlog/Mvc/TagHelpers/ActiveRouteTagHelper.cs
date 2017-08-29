@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace StaticBlog.Mvc.TagHelpers
@@ -10,33 +8,6 @@ namespace StaticBlog.Mvc.TagHelpers
     [HtmlTargetElement(Attributes = "is-active-route")]
     public class ActiveRouteTagHelper : TagHelper
     {
-        private IDictionary<string, string> routeValues;
-
-        /// <summary>The name of the action method.</summary>
-        /// <remarks>Must be <c>null</c> if <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" /> is non-<c>null</c>.</remarks>
-        [HtmlAttributeName("asp-action")]
-        public string Action { get; set; }
-
-        /// <summary>The name of the controller.</summary>
-        /// <remarks>Must be <c>null</c> if <see cref="P:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper.Route" /> is non-<c>null</c>.</remarks>
-        [HtmlAttributeName("asp-controller")]
-        public string Controller { get; set; }
-
-        /// <summary>Additional parameters for the route.</summary>
-        [HtmlAttributeName("asp-all-route-data", DictionaryAttributePrefix = "asp-route-")]
-        public IDictionary<string, string> RouteValues
-        {
-            get
-            {
-                if (routeValues == null)
-                    routeValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                return routeValues;
-            }
-            set
-            {
-                this.routeValues = value;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext" /> for the current request.
@@ -49,7 +20,7 @@ namespace StaticBlog.Mvc.TagHelpers
         {
             base.Process(context, output);
 
-            if (ShouldBeActive())
+            if (ShouldBeActive(output))
             {
                 MakeActive(output);
             }
@@ -57,31 +28,20 @@ namespace StaticBlog.Mvc.TagHelpers
             output.Attributes.RemoveAll("is-active-route");
         }
 
-        private bool ShouldBeActive()
+        private bool ShouldBeActive(TagHelperOutput output)
         {
-            string currentController = ViewContext.RouteData.Values["Controller"].ToString();
-            string currentAction = ViewContext.RouteData.Values["Action"].ToString();
-
-            if (!string.IsNullOrWhiteSpace(Controller) && Controller.ToLower() != currentController.ToLower())
+            var href = (string) output.Attributes["href"]?.Value;
+            var path = ViewContext.HttpContext.Request.Path.ToString();
+            if (href == "/")
             {
-                return false;
-            }
-
-            if (!string.IsNullOrWhiteSpace(Action) && Action.ToLower() != currentAction.ToLower())
-            {
-                return false;
-            }
-
-            foreach (KeyValuePair<string, string> routeValue in RouteValues)
-            {
-                if (!ViewContext.RouteData.Values.ContainsKey(routeValue.Key) ||
-                    ViewContext.RouteData.Values[routeValue.Key].ToString() != routeValue.Value)
+                if(path == "/")
                 {
-                    return false;
+                    return true;
                 }
+                return false;
             }
 
-            return true;
+            return path.StartsWith(href);
         }
 
         private void MakeActive(TagHelperOutput output)
