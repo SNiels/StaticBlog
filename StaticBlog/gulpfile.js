@@ -6,6 +6,7 @@ var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
 var downloadSite = require('./Gulp/downloadSite');
 var site = require('./Gulp/site');
+var git = require('./Gulp/git');
 
 
 gulp.task('default', ['webpack:build-dev']);
@@ -48,4 +49,11 @@ gulp.task('killsite', function () {
 
 gulp.task('downloadSite', function (cb) {
     downloadSite(cb);
+});
+
+gulp.task('commitSite', git.commit);
+gulp.task('pushSite', git.push);
+
+gulp.task('deploySite', function (cb) {
+    return runSequence('commitSite', 'pushSite', cb);
 });
