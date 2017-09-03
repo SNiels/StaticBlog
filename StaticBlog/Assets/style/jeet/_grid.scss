@@ -1,5 +1,5 @@
-﻿@mixin column($ratios: 1, $offset: 0, $cycle: 0, $gutter: map-get($jeet, 'gutter'), $clearfix: true) {
-    $side: _get-layout-direction();
+﻿@mixin column($ratios: 1, $offset: 0, $cycle: 0, $gutter: map-get($jeet, 'gutter'), $clearfix: true, $side: null) {
+    $side: if($side, $side, _get-layout-direction());
     $opposite-side: _opposite-direction($side);
     $column-widths: _get-column($ratios, $gutter);
     $margin-last: 0;

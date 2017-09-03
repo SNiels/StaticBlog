@@ -267,3 +267,4 @@ __pycache__/
 /StaticBlog/wwwroot/assets/main.js.map
 /Output/*
 !/Output/.gitkeep
+/StaticBlog/.vscode

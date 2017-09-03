@@ -1,34 +1,38 @@
-html
-  font-family: 'Segoe UI', 'Verdana', sans-serif
-  box-sizing: border-box
+header
+  padding-top: 20px
+  +sm-to-xss-dev
+    padding-top: 10px
 
-.header
-  &--large
-    height: 400px
-  h1
-    padding-top: 25px
-    text-align: center
-    font-size: 46px
-  div
-    height: 200px
-    background: #e3ecfc
-  div + div
-    height: 50px
-    background: #77abff
-    box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.07) inset
-  nav
-    +clearfix()
-    padding-top: 6px
-    width: 200px
-    margin: 0 auto
-  a
-    width: 50%
-    font-size: 24px
+  .container
+    +center($pad: 10px)
+
+  img
     display: block
+    +lg-to-md-dev
+      +column(1/12)
+    +sm-to-xss-dev
+      height: 50px
+      float: left
+      
+  h1
+    position: relative
+    top: 35px
     float: left
-    text-align: center
-    text-decoration: none
-    text-transform: lowercase
-    padding: 4px 8px
-  a.active
-    border-bottom: 4px solid #000
+    +sm-to-xss-dev
+      margin-left: 10px
+      top: 12px
+
+  nav
+    position: relative
+    top: 50px
+    +sm-to-xss-dev
+      top: 25px
+    +xxs-dev
+      display: none
+    +column(4/12, $side: right)
+    a
+      text-decoration: none
+      height: 30px
+      display: block
+      +column(4/12, $side: right)
+      text-align: right

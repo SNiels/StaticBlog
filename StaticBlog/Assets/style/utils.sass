@@ -1,6 +1,6 @@
 $lg: 1200px
 =lg-dev
-  @media (min-width: #{$md})
+  @media (min-width: #{$lg})
     @content
 
 $md: 992px
@@ -20,4 +20,17 @@ $xs: 480px
 
 =xxs-dev
   @media (max-width: #{$xs - 1px}) 
+    @content
+
+=lg-dev
+  @media (min-width: #{$md})
+    @content
+
+$md: 992px
+=lg-to-md-dev
+  @media (min-width: #{$md})
+    @content
+
+=sm-to-xss-dev
+  @media (max-width: #{$md - 1px}) 
     @content

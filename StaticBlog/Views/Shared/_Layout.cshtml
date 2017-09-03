@@ -9,16 +9,15 @@
     </environment>
 </head>
 <body>
-    <header class="header header--large">
-        <div>
+    <header>
+        <div class="container">
+            <img src="~/images/burger.png" alt="Swimburger Logo" />
             <h1>Swimburger</h1>
-        </div>
-        <div>
             <nav>
                 <a is-active-route asp-controller="home" asp-action="index">Home</a>
                 <a is-active-route asp-controller="blog" asp-action="index">Blog</a>
             </nav>
-        </div>
+        </div>  
     </header>
     @RenderBody()
 
